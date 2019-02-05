@@ -2,6 +2,19 @@
 // показывать или нет выполненные задачи
 $show_complete_tasks = rand(0, 1);
 ?>
+<?php
+function countTasks($category,$list_tasks) {
+	$num = 0;
+	foreach($list_tasks as $key => $massiv ) {	
+		foreach($massiv as $join_key => $value ) {
+				if ($value	== $category) { //$category
+				$num ++;
+			}
+		}
+	}	
+	return $num;
+}	
+?>
  <?php $projects = ["Входящие", "Учеба", "Работа", "Домашние дела", "Авто"];?>
         <?php $list_tasks = [
                 0 => ['task' => 'Собеседование в IT-компании',
@@ -77,11 +90,12 @@ $show_complete_tasks = rand(0, 1);
                 <h2 class="content__side-heading">Проекты</h2>
                 <nav class="main-navigation">
             <ul class="main-navigation__list">
+               
 <!--задание 5.1-5.3 Итерация по массивам-->
         <?php foreach ($projects as $project) : ?>
                 <li class="main-navigation__list-item">
                 <a class="main-navigation__list-item-link" href="#"><?= $project ?></a>
-                <span class="main-navigation__list-item-count">0</span>
+                <span class="main-navigation__list-item-count"><?php echo countTasks($project, $list_tasks);?></span>
                 </li>
         <?php endforeach; ?>
             </ul>
