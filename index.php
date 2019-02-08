@@ -2,9 +2,20 @@
 // показывать или нет выполненные задачи
 $show_complete_tasks = rand(0, 1);
 
- $projects = ["Входящие", "Учеба", "Работа", "Домашние дела", "Авто"];
+function countTasks($category,$list_tasks) {
+	$num = 0;
+	foreach($list_tasks as $key => $massiv ) {	
+		foreach($massiv as $join_key => $value ) {
+				if ($value	== $category) { //$category
+				$num ++;
+			}
+		}
+	}	
+	return $num;
+}	
 
- $list_tasks = [
+$projects = ["Входящие", "Учеба", "Работа", "Домашние дела", "Авто"];
+$list_tasks = [
                 0 => ['task' => 'Собеседование в IT-компании',
                       'date' => '01.12.2019',
                       'category' => 'Работа',
@@ -41,6 +52,3 @@ require_once('functions.php');
 $index_content = include_template('index.php',['list_tasks' => $list_tasks, 'show_complete_tasks' => '$show_complete_tasks']);
 $layout_content = include_template('layout.php', ['title' => 'doingsdone', 'list_tasks' => $list_tasks, 'content' => $index_content, 'projects' => $projects]);
 print($layout_content);
-
-?>
-  
