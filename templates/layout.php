@@ -1,16 +1,4 @@
-
-<?php
-function countTasks($category,$tasks){ 
-    $n = 0; 
-    foreach ($tasks as $key => $val) { 
-        if ($category == $val['category']){ 
-    $n++; 
-        } 
-    } 
-    return $n; 
-} 
-?>
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -45,11 +33,11 @@ function countTasks($category,$tasks){
                 <h2 class="content__side-heading">Проекты</h2>
                 <nav class="main-navigation">
             <ul class="main-navigation__list">
-        <?php foreach($projects as $project):?>
+        <?php foreach ($projects as $project): ?>
                 <li class="main-navigation__list-item">
                 <a class="main-navigation__list-item-link" href="#"><?= $project ?></a>
                 <span class="main-navigation__list-item-count">
-                    <?=countTasks($project, $list_tasks)?>
+                    <?= countTasks($project, $list_tasks); ?>
                 </span>
                 </li>
         <?php endforeach; ?>
