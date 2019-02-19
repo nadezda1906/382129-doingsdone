@@ -25,29 +25,29 @@
 <table class="tasks">
 	<?php foreach ($list_tasks as $val): ?>
 		<?php
-			if ($show_complete_tasks !== 1 && $val['perfomance'] === 'Да') {
+			if ($show_complete_tasks !== 1 && $val['status'] === 1) {
 				continue;
 			}
 
 			$tr_class = 'tasks__item task';
-			if ($val['perfomance'] === 'Да' && $show_complete_tasks === 1) {
+			if ($val['status'] === 1 && $show_complete_tasks === 1) {
 				$tr_class .= ' task--completed';
 			}
-			if (getDiffHours($val['date']) <= 24) {
+			if (getDiffHours($val['created_at']) <= 24) {
 				$tr_class .= ' task--important';
 			}
 		?>
 		<tr class="<?= $tr_class?>">
 			<td class="task__select">
 				<label class="checkbox task__checkbox">
-					<input class="checkbox__input visually-hidden" type="checkbox" <?php if ($val['perfomance'] === 'Да') : ?> checked <?php endif; ?>>
-					<span class="checkbox__text"><?= $val['task'] ?></span>
+					<input class="checkbox__input visually-hidden" type="checkbox" <?php if ($val['status'] === 1) : ?> checked <?php endif; ?>>
+					<span class="checkbox__text"><?= $val['name'] ?></span>
 				</label>
 			</td>
 			<td class="task__file">
-				<a class="download-link" href="#">Home.psd</a>
+				<a class="download-link" href="#"><?= $val['file'] ?></a>
 			</td>
-			<td class="task__date"><?= $val['date'] ?></td>
+			<td class="task__date"><?= date('d.m.Y', strtotime($val['created_at'])) ?></td>
 			<td class="task__controls">
 			</td>
 		</tr>

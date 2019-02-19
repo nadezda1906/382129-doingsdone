@@ -22,7 +22,7 @@ CREATE TABLE `tasks` (
  `file` char(64) NOT NULL,
  `completed_at` datetime NOT NULL,
  `name` varchar(255) NOT NULL,
- `project_id` varchar(255) NOT NULL,
+ `project_id` INT(11) NOT NULL,
  PRIMARY KEY (`id`),
  UNIQUE KEY `created_at` (`created_at`),
  UNIQUE KEY `update_at` (`update_at`),

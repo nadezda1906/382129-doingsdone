@@ -14,10 +14,10 @@ function include_template($name, $data) {
     return $result;
 }
 
-function countTasks($category,$tasks) {
+function countTasks($project_id, $tasks) {
     $n = 0;
     foreach ($tasks as $key => $val) {
-        if ($category == $val['category']) {
+        if ($project_id == $val['project_id']) {
             $n++;
         }
     }
