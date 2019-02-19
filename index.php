@@ -1,55 +1,47 @@
-<h2 class="content__main-heading">Список задач</h2>
+<?php
+require_once 'functions.php';
+/*Подключаем, если не подключается БД*/
+require_once 'data.php';
 
-<form class="search-form" action="index.php" method="post">
-	<input class="search-form__input" type="text" name="" value="" placeholder="Поиск по задачам">
 
-	<input class="search-form__submit" type="submit" name="" value="Искать">
-</form>
+/* Подключаем соединение с БД*/
+$con = mysqli_connect('localhost', 'root', '', 'doingsdone');
+if($con == false){
+	print("Ошибка подключения:".mysqli_connect_error());
+}
+else{
+	print("Соединение установлено");
+	}
+	mysqli_set_charset($con, "utf8");
+/*Добавление нового юзера и проверка соединения*/
+$sql = "INSERT INTO `users`( `registered_at`,`email`, `name`,`password`)values ('2019-08-12 00:00:00', 'sem@mail.ru', 'Сем Семов','15611')";
+$result= mysqli_query($con, $sql);
+if(!$result){
+	$error = mysqli_error($con);
+	print("Ошибка MYSQL:".$error);
+}
+echo "Задачи:".$result;
 
-<div class="tasks-controls">
-	<nav class="tasks-switch">
-		<a href="/" class="tasks-switch__item tasks-switch__item--active">Все задачи</a>
-		<a href="/" class="tasks-switch__item">Повестка дня</a>
-		<a href="/" class="tasks-switch__item">Завтра</a>
-		<a href="/" class="tasks-switch__item">Просроченные</a>
-	</nav>
+$projects_sql = 'SELECT * FROM projects';
+$project = mysqli_query($con, $projects_sql);
+/*Запрос на получение списка из всех проектов для одного пользователя*/
+$tasks_sql = 'SELECT t.id, t.name, t.project_id AS name FROM tasks t LEFT JOIN projects p ON p.user_id = t.name';
+$task = mysqli_query($con, $tasks_sql);
 
-	<label class="checkbox">
-		<!--добавить сюда аттрибут "checked", если переменная $show_complete_tasks равна единице-->
-		<input class="checkbox__input visually-hidden show_completed" type="checkbox" 
-		<?php if ($show_complete_tasks === 1): ?> checked <?php endif; ?>>
-		<span class="checkbox__text">Показывать выполненные</span>
-	</label>
-</div>
+ /* показывать или нет выполненные задачи*/
+$show_complete_tasks = rand(0, 1);
+$index_content = include_template('index.php', [
+    'list_tasks' => $list_tasks, 
+    'show_complete_tasks' => $show_complete_tasks]);
 
-<table class="tasks">
-	<?php foreach ($list_tasks as $val): ?>
-		<?php
-			if ($show_complete_tasks !== 1 && $val['perfomance'] === 'Да') {
-				continue;
-			}
+$layout_content = include_template('layout.php', [
+    'title' => 'doingsdone', 
+    'list_tasks' => $list_tasks, 
+    'content' => $index_content, 
+    'projects' => $projects
+]);
 
-			$tr_class = 'tasks__item task';
-			if ($val['perfomance'] === 'Да' && $show_complete_tasks === 1) {
-				$tr_class .= ' task--completed';
-			}
-			if (getDiffHours($val['date']) <= 24) {
-				$tr_class .= ' task--important';
-			}
-		?>
-		<tr class="<?= $tr_class?>">
-			<td class="task__select">
-				<label class="checkbox task__checkbox">
-					<input class="checkbox__input visually-hidden" type="checkbox" <?php if ($val['perfomance'] === 'Да') : ?> checked <?php endif; ?>>
-					<span class="checkbox__text"><?= $val['task'] ?></span>
-				</label>
-			</td>
-			<td class="task__file">
-				<a class="download-link" href="#">Home.psd</a>
-			</td>
-			<td class="task__date"><?= $val['date'] ?></td>
-			<td class="task__controls">
-			</td>
-		</tr>
-	<?php endforeach; ?>
-</table>
+echo $layout_content;
+
+
+
