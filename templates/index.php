@@ -37,7 +37,7 @@
 				$tr_class .= ' task--important';
 			}
 		?>
-		<tr class="<?= $tr_class ?>">
+		<tr class="<?= $tr_class?>">
 			<td class="task__select">
 				<label class="checkbox task__checkbox">
 					<input class="checkbox__input visually-hidden" type="checkbox" <?php if ($val['perfomance'] === 'Да') : ?> checked <?php endif; ?>>
